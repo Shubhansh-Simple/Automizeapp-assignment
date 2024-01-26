@@ -46,38 +46,9 @@
                 </div>
 
                 <!--SENTIMENT ANALYSIS SECTION-->
-                <div class="card-body">
-
-                  {% if reviews['good_percentage'] or reviews['bad_percentage'] %}
-
-                    <!--PIE CHART-->
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-
-                    <!--PERCENTAGE VALUES DISPLAYED-->
-                    <div class="mt-4 text-center small text-dark">
-                      <span class="mr-2">
-                        <i class="fas fa-circle text-success"></i> 
-                        <b>Positive : {{ reviews['good_percentage'] }}%</b>
-                      </span>
-                      <span class="mr-2">
-                        <i class="fas fa-circle text-danger"></i> 
-                        <b>Negative : {{ reviews['bad_percentage'] }}%</b>
-                      </span>
-                    </div>
-
-                    <!-- CREATING PIE CHART (ONLY AFTER HTML LOADED)-->
-                    <script>
-                      document.addEventListener('DOMContentLoaded', 
-                                    create_chart_pie( {{ reviews['good_percentage'] }}, 
-                                                      {{ reviews['bad_percentage']  }} ));
-                    </script>
-                  {% else %}
-                    <h1 class="text-center">Oops, No Reviews To Analyse</h1>
-                  {% endif %}
-                </div>
-
+                {% with reviews=reviews %}
+                  {% include "utils/pie_chart.html" %}
+                {% endwith %}
             </div>
         </div>
 

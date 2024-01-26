@@ -1,9 +1,10 @@
 from flask  import render_template, request, url_for, redirect, abort
 from app    import app, db
 from models import User
-from utils  import (
-        validate_reg, 
-        validate_login,
+
+# Utilities functions
+from utils.auth  import ( validate_reg, validate_login,)
+from utils.sentiment_analysis import (
         get_top_five_negative_reviews,
         get_top_five_positive_reviews,
         count_bad_reviews,
@@ -14,7 +15,11 @@ import pandas as pd
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    '''Homepage of the web application'''
+
+    #Static data to show sentiment_analysis
+    reviews = { 'good_percentage' : 60, 'bad_percentage'  : 40 }
+    return render_template('index.html', reviews=reviews)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -69,14 +74,15 @@ def wordcloud():
     return render_template('wordcloud.html')
 
 
-# Showing data from excel file
 @app.route('/sentiment_analysis')
 def sentiments_analysis():
+    '''Retrieve and visualize data from excel file'''
+
     reviews = []
 
     '''Ensuring - File reading & Proper Data availability '''
     try:
-        df            = pd.read_excel('./Testing/excel.xlsx', index_col=None)
+        df            = pd.read_excel('data/Beard-Trimmer.xlsx', index_col=None)
         total_reviews = len(df)
 
         # Following columns must present in excel file 
@@ -113,7 +119,6 @@ def sentiments_analysis():
 
     # FileNotFoundError, Invalid Data: leads to 'No Review Found Error Message'
     finally:
-        print('Finally executed!')
         return render_template('sentiment_analysis.html', reviews=reviews )
 
 
