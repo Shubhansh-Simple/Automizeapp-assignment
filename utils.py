@@ -43,6 +43,8 @@ def get_top_five_positive_reviews( df, length ):
 
     for i in range( length-1, length-6, -1):
         try:
+            # No negative indexing
+            if i < 0: break
             data = df.iloc[i]
         except IndexError:
             break
