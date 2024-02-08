@@ -91,14 +91,17 @@ def sentiments_analysis():
 
         if df.empty: raise ValueError
 
+    # Show No-Review-Found-Message, on file not found
     except FileNotFoundError:
-        print('Error raised File not found')
+        print('Error raised! - File not found')
 
+    # Show No-Review-Found-Message, on invalid data found in CSV
     except (ValueError,KeyError):
-        print('Error raised Invalid data found in excel file')
+        print('Error raised! - Invalid data found in excel file')
 
     except Exception as e:
-        abort(500, 'An unexcepted error raised - ',e)
+        print('Unexpected exception raised - ',type(e))
+        abort(500, 'An unexcepted error raised')
 
     else:
         # Sort reviews by REVIEWS_STARS
@@ -117,9 +120,8 @@ def sentiments_analysis():
                                    total_reviews,
                                    total_bad_reviews )
 
-    # FileNotFoundError, Invalid Data: leads to 'No Review Found Error Message'
-    finally:
-        return render_template('sentiment_analysis.html', reviews=reviews )
+    # FileNotFoundError, Invalid Data: leads to 'No Review Found Error Message'  
+    return render_template('sentiment_analysis.html', reviews=reviews )
 
 
 # Showing data from excel file
