@@ -107,6 +107,8 @@ def sentiments_analysis():
         # Sort reviews by REVIEWS_STARS
         df = df.sort_values(by='Review_Stars')
 
+        total_reviews = len(df)
+
         # Collect top five positive & negative reviews
         good_reviews = get_top_five_positive_reviews(df, total_reviews)
         bad_reviews  = get_top_five_negative_reviews(df, 5)
@@ -119,6 +121,8 @@ def sentiments_analysis():
                                    bad_reviews,
                                    total_reviews,
                                    total_bad_reviews )
+        # Debugging
+        print('Prepared reviews data - ',reviews)
 
     # FileNotFoundError, Invalid Data: leads to 'No Review Found Error Message'  
     return render_template('sentiment_analysis.html', reviews=reviews )
